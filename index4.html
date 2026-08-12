@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task 4 - Full Project Implementation</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f4f4;
+}
+
+header{
+background:#0077cc;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+nav{
+background:#333;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+nav a{
+color:white;
+padding:15px;
+text-decoration:none;
+}
+
+nav a:hover{
+background:#0077cc;
+}
+
+section{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+h2{
+margin-bottom:15px;
+color:#0077cc;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+padding:10px 20px;
+background:#28a745;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#218838;
+}
+
+ul{
+margin-top:15px;
+}
+
+li{
+display:flex;
+justify-content:space-between;
+background:#eee;
+padding:10px;
+margin:5px 0;
+}
+
+.delete{
+background:red;
+padding:5px 10px;
+}
+
+.product{
+background:#fafafa;
+padding:10px;
+margin:10px 0;
+border:1px solid #ddd;
+}
+
+footer{
+background:#333;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
+}
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>My Portfolio</h1>
+<p>Task 4 - Full Project</p>
+</header>
+
+<nav>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#todo">To-Do</a>
+<a href="#products">Products</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section id="about">
+<h2>About Me</h2>
+<p>Hello! I am a Web Development Intern passionate about HTML, CSS and JavaScript.</p>
+</section>
+
+<section id="skills">
+<h2>Skills</h2>
+<ul>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+<li>Responsive Web Design</li>
+</ul>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<p>Portfolio Website</p>
+<p>Weather App</p>
+<p>To-Do List</p>
+</section>
+
+<section id="todo">
+<h2>To-Do List (Local Storage)</h2>
+
+<input type="text" id="task" placeholder="Enter Task">
+
+<button onclick="addTask()">Add Task</button>
+
+<ul id="taskList"></ul>
+
+</section>
+
+<section id="products">
+
+<h2>Product Listing</h2>
+
+<input type="text" id="search" placeholder="Search Product" onkeyup="searchProduct()">
+
+<div id="productList"></div>
+
+</section>
+
+<section id="contact">
+
+<h2>Contact</h2>
+
+<p>Email : example@gmail.com</p>
+
+<p>Phone : 9876543210</p>
+
+</section>
+
+<footer>
+
+<p>Task 4 - ApexPlanet Internship</p>
+
+</footer>
+
+<script>
+
+let tasks=JSON.parse(localStorage.getItem("tasks")) || [];
+
+function displayTasks(){
+
+let list=document.getElementById("taskList");
+
+list.innerHTML="";
+
+tasks.forEach(function(task,index){
+
+let li=document.createElement("li");
+
+li.innerHTML=task+
+
+'<button class="delete" onclick="deleteTask('+index+')">Delete</button>';
+
+list.appendChild(li);
+
+});
+
+localStorage.setItem("tasks",JSON.stringify(tasks));
+
+}
+
+function addTask(){
+
+let task=document.getElementById("task").value;
+
+if(task=="") return;
+
+tasks.push(task);
+
+document.getElementById("task").value="";
+
+displayTasks();
+
+}
+
+function deleteTask(index){
+
+tasks.splice(index,1);
+
+displayTasks();
+
+}
+
+displayTasks();
+
+let products=[
+
+{name:"Laptop",price:"₹50000"},
+
+{name:"Mobile",price:"₹20000"},
+
+{name:"Keyboard",price:"₹1200"},
+
+{name:"Mouse",price:"₹700"},
+
+{name:"Monitor",price:"₹15000"}
+
+];
+
+function showProducts(data){
+
+let output="";
+
+data.forEach(function(product){
+
+output+=`
+<div class="product">
+<h3>${product.name}</h3>
+<p>Price : ${product.price}</p>
+</div>
+`;
+
+});
+
+document.getElementById("productList").innerHTML=output;
+
+}
+
+showProducts(products);
+
+function searchProduct(){
+
+let text=document.getElementById("search").value.toLowerCase();
+
+let filtered=products.filter(function(product){
+
+return product.name.toLowerCase().includes(text);
+
+});
+
+showProducts(filtered);
+
+}
+
+</script>
+
+</body>
+</html>
